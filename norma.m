@@ -1,3 +1,2 @@
 disp(“I am Shi Chao”);
-disp();
-Hello Hello
+disp();yuan haung ello Hello
