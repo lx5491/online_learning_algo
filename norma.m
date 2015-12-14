@@ -1,8 +1,16 @@
 load('mnist_49_3000.mat');
+% load('data/BankNote.mat');
+% x = Note(:, 1:4);
+% y = Note(:, 5);
 x = x';
 y = y';
 x = x(1:1500, :);
 y = y(1:1500, :);
+
+% code for loading BankNote.mat
+% idx = randperm(1372);
+% x = x(idx, :);
+% y = y(idx, :);
 
 do_truncation = 1; % indicate whether to do truncation
 tau = 1000; % the number of data to "remember"
@@ -20,7 +28,7 @@ alphas = [];
 t = 1;
 correct = 0;
 while t <= n
-    eta = 0.001 / sqrt(t);
+    eta = 0.0001 / sqrt(t);
     if t == 1
         g_x = 1;
         alphas = [alphas, -eta * loss_gradient_sm(g_x, y(t, :), rho)];
