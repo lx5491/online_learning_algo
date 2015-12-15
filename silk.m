@@ -1,7 +1,20 @@
 load('mnist_49_3000.mat');
+
+% Change the filenames if you've saved the files under different names
+% On some platforms, the files might be saved as 
+% train-images.idx3-ubyte / train-labels.idx1-ubyte
+% images = loadMNISTImages('data/train-images-idx3-ubyte');
+% labels = loadMNISTLabels('data/train-labels-idx1-ubyte');
+% d = size(images, 1);
+% imagesc(reshape(images(:,3), [sqrt(d), sqrt(d)])');
+% disp(labels(3));
+
+label = label';
+images = images';
+
 x = x';
 y = y';
-size_choose = 1000;
+size_choose = 3000;
 x = x(1:size_choose, :);
 y = y(1:size_choose, :);
 
@@ -9,7 +22,7 @@ tau = 0.00005;
 C = 100;
 kernel_sigma = 16;
 n = size(x, 1);
-loss_func = 'binary_hinge';
+loss_func = 'square';
 alphas = [];
 
 t = 1;

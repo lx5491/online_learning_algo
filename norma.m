@@ -4,16 +4,17 @@ load('mnist_49_3000.mat');
 % y = Note(:, 5);
 x = x';
 y = y';
-x = x(1:1500, :);
-y = y(1:1500, :);
+size_choose = 3000;
+x = x(1:size_choose, :);
+y = y(1:size_choose, :);
 
 % code for loading BankNote.mat
 % idx = randperm(1372);
 % x = x(idx, :);
 % y = y(idx, :);
 
-do_truncation = 1; % indicate whether to do truncation
-tau = 1000; % the number of data to "remember"
+do_truncation = 0; % indicate whether to do truncation
+tau = 100; % the number of data to "remember"
 
 eta = 0.0001;
 rho = 0;
@@ -33,11 +34,12 @@ while t <= n
         g_x = 1;
         alphas = [alphas, -eta * loss_gradient_sm(g_x, y(t, :), rho)];
     else
-        k_mat = kernel_gaussian(x(1:t-1, :), x(t, :), kernel_sigma);
-        
         % If do_truncation, need to truncate k_mat to 
         if do_truncation
-            k_mat = k_mat(max(1, t - tau): t - 1, :);
+            x_taus = x(max(1, t - tau): t - 1);
+            k_mat = kernel_gaussian(x_taus, x(t, :), kernel_sigma);
+        else
+            k_mat = kernel_gaussian(x(1:t-1, :), x(t, :), kernel_sigma);
         end
         g_x = alphas * k_mat;
         alphas = (1 - eta * lambda) * alphas;
