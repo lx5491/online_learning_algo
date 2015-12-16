@@ -1,6 +1,7 @@
-function [] = silk()
+function [precision] = silk(x, y, kernel_sigma, silk_tau, C)
     addpath('./helper/');
-    load('data/mnist_49_3000.mat');
+    addpath('./data/handwritten_for_classification');
+%     load('data/mnist_49_3000.mat');
 
     % Change the filenames if you've saved the files under different names
     % On some platforms, the files might be saved as 
@@ -13,16 +14,19 @@ function [] = silk()
 
     % x = images;
     % y = labels';
+%     [x, y] = get_handwritten(1, 2);
 
-    x = x';
-    y = y';
-    size_choose = 300;
-    x = x(1:size_choose, :);
-    y = y(1:size_choose, :);
+%     [x, y] = gen_data();
+    
+%     x = x';
+%     y = y';
+%     size_choose = 10000;
+%     x = x(1:size_choose, :);
+%     y = y(1:size_choose, :);
 
-    tau = 0.00005;
-    C = 100;
-    kernel_sigma = 16;
+%     silk_tau = 0.00005;
+%     C = 100;
+%     kernel_sigma = 2;
     n = size(x, 1);
     loss_func = 'square';
     alphas = [];
@@ -35,18 +39,19 @@ function [] = silk()
         if t == 1
             g_x = 1;
             kernel_t = kernel_gaussian(x_t, x_t, kernel_sigma);
-            alphas = [alphas, update_t_alpha(kernel_t, y_t, g_x, tau, C, loss_func)];
+            alphas = [alphas, update_t_alpha(kernel_t, y_t, g_x, silk_tau, C, loss_func)];
         else
             k_mat = kernel_gaussian(x(1:t-1, :), x(t, :), kernel_sigma);
             g_x = alphas * k_mat;
             kernel_t = kernel_gaussian(x_t, x_t, kernel_sigma);
-            alpha_t = update_t_alpha(kernel_t, y_t, g_x, tau, C, loss_func);
+            alpha_t = update_t_alpha(kernel_t, y_t, g_x, silk_tau, C, loss_func);
             alphas = [alphas, alpha_t];
         end
         if g_x * y_t > 0
             correct = correct + 1;
         end
-        disp([t, correct]);
+%         disp([t, correct]);
+        precision = correct / t;
         t = t + 1;
     end
 end
@@ -70,6 +75,24 @@ function [ alpha ] = update_t_alpha( kernel_t, y_t, g_x, tau, C, loss_func )
             alpha = alpha_tilde;
         end
     end
+end
+
+function [x, y] = gen_data()
+    total_range =10000;
+    x = zeros(total_range,2);
+    y = zeros(total_range, 1);
+    umin=-1;
+    umax=1;
+    n=total_range;
+    u=umin+rand(1,n)*(umax-umin);
+    y = sign(u)';
+    y(find(y==0)) = 1;
+    x(find(y>0),:) = normrnd(2,1,[size(find(y>0)),2]);
+    x(find(y<0),:) = normrnd(-2,1,[size(find(y<0)),2]);
+    
+%     scatter(x(:,1),x(:,2));
+%     hold on;
+%     scatter(x(find(y<0),1),x(find(y<0),2),'d');
 end
 
 
