@@ -1,5 +1,5 @@
 function [] = norma_regression()
-    addpath('./helper/');
+    addpath('./he/latexfigure/');
     load('data/bodyfat_data.mat');
     % load('data/BankNote.mat');
     % x = Note(:, 1:4);
@@ -45,9 +45,9 @@ function [] = norma_regression()
             % If do_truncation, need to truncate k_mat to 
             if do_truncation
                 x_taus = x(max(1, t - tau): t - 1);
-                k_mat = kernel_gaussian(x_taus, x(t, :), kernel_sigma);
+                k_mat = helper.kernel_gaussian(x_taus, x(t, :), kernel_sigma);
             else
-                k_mat = kernel_gaussian(x(1:t-1, :), x(t, :), kernel_sigma);
+                k_mat = helper.kernel_gaussian(x(1:t-1, :), x(t, :), kernel_sigma);
             end
             g_x = alphas * k_mat;
             delta=y(t, :)-g_x;
