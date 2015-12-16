@@ -1,29 +1,26 @@
 function [] = norma_regression()
     addpath('./helper/');
     load('data/bodyfat_data.mat');
-    % load('data/BankNote.mat');
-    % x = Note(:, 1:4);
-    % y = Note(:, 5);
+%     load('data/bank.mat');
+    
     x = X;
     y = y;
-    % size_choose = 3000;
-    % x = x(1:size_choose, :);
-    % y = y(1:size_choose, :);
-
-    % code for loading BankNote.mat
-    % idx = randperm(1372);
-    % x = x(idx, :);
-    % y = y(idx, :);
+%     size_choose = 3000;
+%     x = x(1:size_choose, :);
+%     y = y(1:size_choose, :);
+    
+    [y, perm] = sort(y, 'descend');
+    x = x(perm);
 
     do_truncation = 0; % indicate whether to do truncation
     tau = 100; % the number of data to "remember"
     loss_func= 'insensitive';
-    eta = 0.0001;
+    eta = 3;
     rho = 0;
     lambda = 1;
-    nu = 0.01;
+    nu = 0.2;
     sigma=0;
-    epsi=0;
+    epsi=0.01;
     kernel_sigma = 16;
     b = 0;
     n = size(x, 1);
@@ -32,8 +29,10 @@ function [] = norma_regression()
 
     t = 1;
     correct = 0;
+    iter_s = [];
+    predicted_values = [];
      while t <= n
-        eta = 0.0001 / sqrt(t);
+        eta = 5 / sqrt(t);
         if t == 1
             g_x = 1;
             delta=y(t, :)-g_x;
@@ -64,34 +63,35 @@ function [] = norma_regression()
                 epsi=update_paremeter(eta,delta,epsi,sigma,nu,loss_func);
             elseif strcmp(loss_func, 'hubers_robust')
                 sigma=update_paremeter(eta,delta,epsi,sigma,nu,loss_func);
-            end
-    %       disp([t, g_x, delta])  
+            end 
         end
 
-      disp([t, los]);
+%       disp([t, los]);
+        disp([los])
+        iter_s = [iter_s t];
+        predicted_values = [predicted_values, g_x];
         t = t + 1;
      end
+     
+     figure
+     plot(iter_s, y, iter_s, predicted_values);
+%      plot(iter_s, y);
+%      plot(iter_s, predicted_values);    
 end
 
 function [ alpha ] = norma_update_t_alpha(delta,eta, epsi, sigma, loss_func )
-    if delta>=0
-         sgn=1;
-     else
-         sgn=-1;
-    end
-
-     if strcmp(loss_func, 'square')
+    if strcmp(loss_func, 'square')
         alpha = eta*delta;
     elseif strcmp(loss_func, 'insensitive')
         if abs(delta)>epsi
-            alpha=eta*sgn;
+            alpha=eta * sign(delta);
         else
             alpha=0;
         end
      elseif strcmp(loss_func, 'hubers_robust')
          if abs(delta)>sigma
             alpha=eta*sgn;
-        else
+         else
             alpha=delta/sigma;
          end
     end

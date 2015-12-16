@@ -1,6 +1,6 @@
 
  
-function model_based_online_kernel_classification(C,r,rho,x,y,kernel_sigma)%model based classification
+function [precision] = model_based_online_kernel_classification(C,r,rho,x,y,kernel_sigma)%model based classification
     %tunning parameter set to be :
     %C = 1; 
     %r = 0.001;
@@ -40,10 +40,10 @@ function model_based_online_kernel_classification(C,r,rho,x,y,kernel_sigma)%mode
             correct = correct + 1;
         end
         %fprintf('f = %f, y = %d, t = %d, correct= %d\n',f, y(t,:),t,correct);
-       
+        precision = correct / t;
         t = t + 1;
     end
-    fprintf('C = %f,r = %f,rho = %f, errors = %d out of %d\n',C,r,rho,t - correct -1, t -1);
+%     fprintf('C = %f,r = %f,rho = %f, errors = %d out of %d\n',C,r,rho,t - correct -1, t -1);
 
 end
 
