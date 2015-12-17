@@ -1,6 +1,8 @@
+%author: yuan zhuang(yyzhuang)
+
 function [] = experiment()
    
-   
+  
    total_ranges = [50:100:3000];
    model_based_precision = zeros(size(total_ranges));
    norma_precision_with_trunc = zeros(size(total_ranges));
