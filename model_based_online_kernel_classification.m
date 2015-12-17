@@ -1,4 +1,4 @@
-
+%Author: Yuan Zhuang(yyzhuang)
  
 function [precision] = model_based_online_kernel_classification(C,r,rho,x,y,kernel_sigma)%model based classification
     %tunning parameter set to be :
