@@ -1,7 +1,7 @@
 function [] = experiment()
     addpath('./data/handwritten_for_classification');
-    run_norma_experiment();
-    run_silk_experiment();
+    %run_norma_experiment();
+    %run_silk_experiment();
     run_model_based_online_experiment();
 end
 

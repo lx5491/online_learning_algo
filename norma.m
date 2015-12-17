@@ -56,7 +56,7 @@ function [precision] = norma(x, y, kernel_sigma, rho, nu, do_truncation, tau)
         if g_x * y(t, :) > 0
             correct = correct + 1;
         end
-%         fprintf('%d %d %f', t, correct, correct / t);
+        fprintf('%d %d %f\n', t, correct, correct / t);
 %         disp([b, rho, eta]);
         precision = correct / t;
         t = t + 1;
