@@ -1,3 +1,4 @@
+%% Author: Xi Liu
 function [precision] = silk(x, y, kernel_sigma, silk_tau, C)
     addpath('./helper/');
     addpath('./data/handwritten_for_classification');

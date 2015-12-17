@@ -1,3 +1,4 @@
+% Author: Xi Liu
 function [precision] = norma(x, y, kernel_sigma, rho, nu, do_truncation, tau)
     addpath('./helper/');
     addpath('./data/handwritten_for_classification');

@@ -1,3 +1,5 @@
+% Author: Xi Liu
+
 function [] = experiment()
     addpath('./data/handwritten_for_classification');
     %run_norma_experiment();

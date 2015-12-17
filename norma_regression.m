@@ -1,3 +1,4 @@
+% Author: Zhao Zhang
 function [] = norma_regression()
     addpath('./helper/');
     load('data/bodyfat_data.mat');
