@@ -7,6 +7,7 @@ function [precision] = model_based_online_kernel_classification(C,r,rho,x,y,kern
     %rho = 1.2;
     %kernel_sigma = 1600;
     %change one of the class to -1
+    addpath('./helper/');
     indices = randperm(size(x,1));
     x = x(indices, :);
     y = y(indices, :);
